@@ -7,9 +7,6 @@ import marker from './images/location-dot-solid.svg';
 
 function App() {
   const data = useRef(null);
-  const det = useRef(null);
-
-  const [ip, setIP] = useState(null);
   const [output, setData] = useState(null);
 
   async function getApiData(IPAddress) {
@@ -26,7 +23,6 @@ function App() {
 
   async function findIp() {
     if(data.current.value.trim().length !== 0){
-      setIP(data.current.value);
       const apiData = await getApiData(data.current.value);
       setData([apiData]);
     } else{
@@ -36,17 +32,14 @@ function App() {
   const customIcon = new Icon({
     iconUrl: marker,
     iconSize: [20, 20]
-  })
-
+  });
 
   function time(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-
     const formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 
     return(formattedTime);
-
   }
   return (
     <>
@@ -60,7 +53,7 @@ function App() {
       {Array.isArray(output) && output.every(item => typeof item === 'object') ? (
         output.map((result, index) => (
           <React.Fragment key={index}>
-            <section ref={det} className='displayDetails'>
+            <section className='displayDetails'>
               <div>
                 <h5>IP Address</h5>
                 <h3>{result.query}</h3>
