@@ -20,7 +20,6 @@ function App() {
       alert(`ERROR: ${err}`);
     }
   }
-
   async function findIp() {
     if(data.current.value.trim().length !== 0){
       const apiData = await getApiData(data.current.value);
@@ -32,7 +31,7 @@ function App() {
   const customIcon = new Icon({
     iconUrl: marker,
     iconSize: [20, 20]
-  });
+  })
 
   function time(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600);
