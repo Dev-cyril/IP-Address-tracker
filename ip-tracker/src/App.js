@@ -12,12 +12,14 @@ function App() {
   async function getApiData(IPAddress) {
     try {
       const response = await fetch(
-        `http://ip-api.com/json/${IPAddress}?fields=33612761`
+        `https://ipapi.co/${IPAddress}/json/`
       );
       const data = await response.json();
-      return (data.status === 'success' ? data : alert(data.message));
+      console.log(data)
+
+      return (data.error === undefined ? data : alert(data.reason));
     } catch (err) {
-      alert(`ERROR: ${err}`);
+      alert(err);
     }
   }
   async function findIp() {
@@ -33,13 +35,13 @@ function App() {
     iconSize: [20, 20]
   })
 
-  function time(totalSeconds) {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+  // function time(totalSeconds) {
+  //   const hours = Math.floor(totalSeconds / 3600);
+  //   const minutes = Math.floor((totalSeconds % 3600) / 60);
+  //   const formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 
-    return(formattedTime);
-  }
+  //   return(formattedTime);
+  // }
   return (
     <>
       <section className='searchBar'>
@@ -55,31 +57,31 @@ function App() {
             <section className='displayDetails'>
               <div>
                 <h5>IP Address</h5>
-                <h3>{result.query}</h3>
+                <h3>{result.ip}</h3>
               </div>
               <div>
                 <h5>Location</h5>
                 <h3>
-                  {result.city} in {result.regionName}, {result.country}
+                  {result.city}, {result.country_name}
                 </h3>
               </div>
               <div>
                 <h5>Timezone</h5>
-                <h3>UTC {time(result.offset)}</h3>
+                <h3>UTC {result.utc_offset}</h3>
               </div>
               <div>
                 <h5>ISP</h5>
-                <h3>{result.isp}</h3>
+                <h3>{result.org}</h3>
               </div>
             </section>
             <section className='map-component'>
               <div className='map'>
-                <MapContainer center={[result.lat, result.lon]} zoom={10} scrollWheelZoom={true}>
+                <MapContainer center={[result.latitude, result.longitude]} zoom={10} scrollWheelZoom={true}>
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  <Marker position={[result.lat, result.lon]} icon={customIcon}>
+                  <Marker position={[result.latitude, result.longitude]} icon={customIcon}>
                     <Popup>{result.city}</Popup>
                   </Marker>
                 </MapContainer>
